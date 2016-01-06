@@ -1,0 +1,118 @@
+<!doctype html>
+<html ng-app="viewer">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script language="javascript">
+      angular.module("viewer", [])
+        .controller('AppCtrl', function ($http, $window, $scope) {
+          $scope.url = decodeURIComponent($window.location.search.substring(1));
+          if ($scope.url) {
+            $http.get($scope.url).then(function(response) {
+              $scope.stats = response.data;
+            });
+          }
+        });
+    </script>
+    <style>
+      .stats-table {
+        display: inline-block;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body ng-controller="AppCtrl">
+    <p ng-show={{!!url}}>Using url {{url}}</p>
+    <p ng-hide={{!!url}}>Provide URL encoded data URL after the '?'</p>
+
+    <div class="stats-table">
+      <h1>Users</h1>
+      <table border="1">
+        <thead>
+          <tr>
+            <td><b>User</b></td>
+            <td><b>Opened PRs</b></td>
+            <td><b>Merged PRs</b></td>
+            <td><b>Comments</b></td>
+            <td><b>Commented on PRs</b></td>
+            <td><b>Opened Additions</b></td>
+            <td><b>Opened Removals</b></td>
+            <td><b>Opened Chaged files</b></td>
+            <td><b>Merged Additions</b></td>
+            <td><b>Merged Removals</b></td>
+            <td><b>Merged Chaged files</b></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(username, userstats) in stats.users"#>
+            <td>{{username}}</td>
+            <td>{{userstats["opened-prs"]}}
+            <td>{{userstats.merged}}
+            <td>{{userstats.comments}}
+            <td>{{userstats["commented-on-prs"]}}
+            <td>{{userstats.opened_additions}}</td>
+            <td>{{userstats.opened_deletions}}</td>
+            <td>{{userstats.opened_changed_files}}</td>
+            <td>{{userstats.merged_additions}}</td>
+            <td>{{userstats.merged_deletions}}</td>
+            <td>{{userstats.merged_changed_files}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <br />
+
+    <div class="stats-table">
+      <h1>Opened PRs</h1>
+      <table border="1">
+        <thead>
+          <tr>
+            <td><b>PR number</b></td>
+            <td><b>Opener</b></td>
+            <td><b>Additions</b></td>
+            <td><b>Deletions</b></td>
+            <td><b>Changed files</b></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(pr, prstats) in stats['opened PRs']">
+            <td>
+              <b ng-show="pr=='total'">{{pr}}</b>
+              <span ng-hide="pr=='total'">{{pr}}</span>
+            </td>
+            <td>{{prstats.opener}}</td>
+            <td>{{prstats.additions}}</td>
+            <td>{{prstats.deletions}}</td>
+            <td>{{prstats.changed_files}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stats-table">
+      <h1>Merged PRs</h1>
+      <table border="1">
+        <thead>
+          <tr>
+            <td><b>PR number</b></td>
+            <td><b>Additions</b></td>
+            <td><b>Deletions</b></td>
+            <td><b>Changed files</b></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(pr, prstats) in stats['merged PRs']">
+            <td>
+              <b ng-show="pr=='total'">{{pr}}</b>
+              <span ng-hide="pr=='total'">{{pr}}</span>
+            </td>
+            <td>{{prstats.additions}}</td>
+            <td>{{prstats.deletions}}</td>
+            <td>{{prstats.changed_files}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </body>
+</html>
