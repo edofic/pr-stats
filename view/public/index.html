@@ -21,10 +21,12 @@
     </style>
   </head>
   <body ng-controller="AppCtrl">
-    <p ng-show={{!!url}}>Using url {{url}}</p>
-    <p ng-hide={{!!url}}>Provide URL encoded data URL after the '?'</p>
+    <p ng-show="url">Using url {{url}}</p>
+    <p ng-hide="url">Provide URL encoded data URL after the '?'</p>
 
-    <div class="stats-table">
+    <h1 ng-if="url && !stats">Loading...</h1>
+
+    <div class="stats-table" ng-if="stats">
       <h1>Users</h1>
       <table border="1">
         <thead>
@@ -62,7 +64,7 @@
 
     <br />
 
-    <div class="stats-table">
+    <div class="stats-table" ng-if="stats">
       <h1>Opened PRs</h1>
       <table border="1">
         <thead>
@@ -89,7 +91,7 @@
       </table>
     </div>
 
-    <div class="stats-table">
+    <div class="stats-table" ng-if="stats">
       <h1>Merged PRs</h1>
       <table border="1">
         <thead>
