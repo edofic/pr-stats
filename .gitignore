@@ -1,2 +1,5 @@
+*.pyc
+/dist.zip
 /env
+/prst_config.py
 /stats
