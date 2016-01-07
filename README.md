@@ -14,6 +14,13 @@ And then supply repository name, start date, and end date
 
 This will dump JSON formatted stats to the console.
 
+### AWS Lambda
+
+You can also package this tool as an AWS Lambda function. For this you will need to provide a `prst_config.py` file - see `prst_config.sample` and then run `make dist` or `make dockerdist` for a completely isolated built.
+
+The `prst_config.py` contains an aditional parameter: `put_url`. If present, the lambda will HTTP PUT the results to the given url after it's done.
+
+
 ## Viewing the results
 
 The `view` folder contains a very simple Angular.js based renderer for the results. It is a static page and takes URL to stats as a query string.
