@@ -1,5 +1,6 @@
 import collections
 import requests
+import time
 
 
 base = "https://api.github.com"
@@ -108,10 +109,16 @@ class PrSt(object):
 
     for pr_num in self.pull_stats:
       for prop in ["additions", "deletions", "changed_files"]:
-        self.user_stats[login]["opened_" + prop] += self.pull_stats[pr_num][prop]
+        self.user_stats[login]["opened_" + prop] += \
+            self.pull_stats[pr_num][prop]
 
     self.result = {
         "users": self.user_stats,
         "opened PRs": self.compute_pr_stats(self.opened_prs),
         "merged PRs": self.compute_pr_stats(self.merged_prs),
+        "timespan": {
+            "start": self.sprint_start,
+            "end": self.sprint_end,
+            "captured_at": int(time.time()),
+        },
     }

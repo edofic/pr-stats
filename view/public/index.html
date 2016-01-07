@@ -31,6 +31,26 @@
     <h1 ng-if="url && !stats">Loading...</h1>
 
     <div class="stats-table" ng-if="stats">
+      <h1>Timespan</h1>
+        <table>
+          <tr>
+            <td>Captured at</td>
+            <td>{{stats.timespan.captured_at * 1000 | date: 'yyyy-MM-ddTHH:mm:ss' }}Z</td>
+          </tr>
+          <tr>
+            <td>Span start</td>
+            <td>{{stats.timespan.start}}</td>
+          </tr>
+          <tr>
+            <td>Span end</td>
+            <td>{{stats.timespan.end}}</td>
+          </tr>
+        </table>
+    </div>
+
+    <br />
+
+    <div class="stats-table" ng-if="stats">
       <h1>Users</h1>
       <table border="1">
         <thead>
