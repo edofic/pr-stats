@@ -4,12 +4,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script language="javascript">
       angular.module("viewer", [])
-        .controller('AppCtrl', function ($http, $window, $scope) {
+        .controller('AppCtrl', function ($http, $window, $scope, $timeout) {
           $scope.url = decodeURIComponent($window.location.search.substring(1));
           if ($scope.url) {
-            $http.get($scope.url).then(function(response) {
-              $scope.stats = response.data;
-            });
+            function load() {
+              $http.get($scope.url).then(function(response) {
+                $scope.stats = response.data;
+                $timeout(load, 60 * 1000);
+              });
+            }
+            load();
           }
         });
     </script>
