@@ -26,8 +26,10 @@ def lambda_handler(event, context):
   return json.dumps(stats.result, indent=2)
 
 if __name__ == "__main__":
-  prst_config.username = os.environ["GITHUB_USERNAME"]
-  prst_config.password = os.environ["GITHUB_PASSWORD"]
+  prst_config.username = os.environ.get("GITHUB_USERNAME",
+                                        prst_config.username)
+  prst_config.password = os.environ.get("GITHUB_PASSWORD",
+                                        prst_config.password)
   prst_config.repo_name, prst_config.sprint_start, prst_config.sprint_end = \
       sys.argv[1:]
   print(lambda_handler(None, None))
