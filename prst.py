@@ -109,8 +109,11 @@ class PrSt(object):
 
     for pr_num in self.pull_stats:
       for prop in ["additions", "deletions", "changed_files"]:
-        self.user_stats[login]["opened_" + prop] += \
-            self.pull_stats[pr_num][prop]
+        pr = self.pull_stats[pr_num]
+        login = pr.get("opener", None)
+        if login is None:
+          continue
+        self.user_stats[login]["opened_" + prop] += pr[prop]
 
     self.result = {
         "users": self.user_stats,
