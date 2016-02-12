@@ -7,13 +7,18 @@
         .controller('AppCtrl', function ($http, $window, $scope, $timeout) {
           $scope.url = decodeURIComponent($window.location.search.substring(1));
           if ($scope.url) {
-            function load() {
-              $http.get($scope.url).then(function(response) {
-                $scope.stats = response.data;
-                $timeout(load, 60 * 1000);
-              });
-            }
-            load();
+            $http.get($scope.url).then(function(response) {
+              $scope.stats = response.data;
+              var total = {};
+              for (var user in $scope.stats.users) {
+                var stats = $scope.stats.users[user];
+                for (var key in stats) {
+                  var value = stats[key];
+                  total[key] = (total[key] || 0) + value;
+                }
+              }
+              $scope.stats.users["total"] = total;
+            });
           }
         });
     </script>
@@ -57,6 +62,7 @@
           <tr>
             <td><b>User</b></td>
             <td><b>Opened PRs</b></td>
+            <td><b>Opened QFs</b></td>
             <td><b>Merged PRs</b></td>
             <td><b>Comments</b></td>
             <td><b>Commented on PRs</b></td>
@@ -70,8 +76,12 @@
         </thead>
         <tbody>
           <tr ng-repeat="(username, userstats) in stats.users"#>
-            <td>{{username}}</td>
+            <td>
+              <b ng-show="username=='total'">{{username}}</b>
+              <span ng-hide="username=='total'">{{username}}</span>
+            </td>
             <td>{{userstats["opened-prs"]}}
+            <td>{{userstats["opened-qf"]}}
             <td>{{userstats.merged}}
             <td>{{userstats.comments}}
             <td>{{userstats["commented-on-prs"]}}

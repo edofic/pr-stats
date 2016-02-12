@@ -80,6 +80,8 @@ class PrSt(object):
       if self.in_sprint(pr["created_at"]):
         self.user_stats[pr["user"]["login"]]["opened-prs"] += 1
         self.opened_prs.append(pr["number"])
+        if pr["title"].lower().startswith("quick-fix"):
+          self.user_stats[pr["user"]["login"]]["opened-qf"] += 1
       if self.in_sprint(pr["merged_at"]):
         self.merged_prs.append(pr["number"])
       if self.in_sprint(pr["created_at"]) or self.in_sprint(pr["merged_at"]):
