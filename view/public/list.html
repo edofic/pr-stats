@@ -1,0 +1,35 @@
+<!doctype html>
+<html ng-app="viewer">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script language="javascript">
+      angular.module("viewer", [])
+        .controller('AppCtrl', function ($http, $window, $scope, $timeout) {
+          $scope.url = decodeURIComponent($window.location.search.substring(1));
+          if ($scope.url) {
+            $http.get($scope.url + "/.json?shallow=true").then(function(response) {
+              var entries = [];
+              for (var entry in response.data) {
+                entries.push(entry);
+              }
+              entries.sort().reverse();
+              $scope.entries = entries;
+            });
+          }
+        });
+    </script>
+  </head>
+  <body ng-controller="AppCtrl">
+    <p ng-show="url">Listing url {{url}}</p>
+    <p ng-hide="url">Provide URL encoded data URL after the '?'</p>
+
+    <h1 ng-if="url && !entries">Loading...</h1>
+
+    <ul>
+      <li ng-repeat="entry in entries">
+        <a href="/?{{url}}/{{entry}}.json" >{{entry}}</a>
+      </li>
+    </ul>
+
+  </body>
+</html>
