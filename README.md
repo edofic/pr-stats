@@ -2,6 +2,22 @@
 
 This is a simple command line tool to compute some metrics of pull requests on a GitHub repository inside a time span.
 
+## Development environment
+Install [pip](https://pypi.python.org/pypi/pip) and [virtualenv](https://virtualenv.pypa.io/en/stable/).
+
+Create a new virtual environment:
+
+    virtualenv bin
+    
+Activate the environment:
+
+    source env/bin/activate
+
+Install the requirements:
+
+    pip install -r requirements.txt
+
+
 ## Usage
 Currently only username/password authentication is implemented so you will need to provide your GitHub credentials in the environment
 
